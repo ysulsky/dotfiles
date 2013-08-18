@@ -1,0 +1,30 @@
+%include /etc/inputrc
+
+#set horizontal-scroll-mode On
+Meta-h: backward-kill-word
+Control-Del: backward-kill-word
+"\C-u": universal-argument
+"\C-x\C-r": re-read-init-file
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
+"\e[5C": forward-word
+"\e[5D": backward-word
+"\e\e[C": forward-word
+"\e\e[D": backward-word
+
+# Options
+set bell-style visible
+set comment-begin "#"
+set completion-ignore-case on
+set completion-query-items 100
+set convert-meta off
+set disable-completion off
+set editing-mode emacs
+set enable-keypad off
+set expand-tilde off
+set input-meta on
+set mark-directories on
+set mark-modified-lines yes
+set output-meta on
+set show-all-if-ambiguous off
+set visible-stats on

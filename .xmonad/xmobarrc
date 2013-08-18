@@ -1,0 +1,16 @@
+Config {
+  font = "xft:Bitstream Vera Sans Mono:size=8:weight=bold:antialias=true"
+, bgColor = "black"
+, fgColor = "grey"
+, position = Top
+, commands = [ Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
+             -- , Run Memory ["-t","Mem: <usedratio>%"] 10
+             , Run Wireless "wlan0" ["-t", "wlan0: <essid> <qualitybar>"] 10
+             , Run Battery [] 10
+             , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+             , Run StdinReader
+             ]
+, sepChar = "%"
+, alignSep = "}{"
+, template = "%wlan0wi% | %battery% | %cpu% } %StdinReader% { <fc=#ee9a00>%date%</fc>"
+}
