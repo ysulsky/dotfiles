@@ -16,7 +16,7 @@ main = do
      , layoutHook = avoidStruts  $  layoutHook defaultConfig
      , logHook    = dynamicLogWithPP xmobarPP
                       { ppOutput = hPutStrLn xmproc
-                      , ppOrder  = (\(ws:_) -> [ws]) }
+                      , ppOrder  = (\(ws:lo:_) -> [ws, lo]) }
      , workspaces = map show $ [ 1 .. 9 ] ++ [ 0 :: Int ]
      } `removeKeysP`
      [ "M-q", "M-S-q"
@@ -24,7 +24,7 @@ main = do
      
 myKeys = 
   [ ("M-S-r", spawn "dmenu_run -b -i -nb black -nf white -sb gray -sf red -fn -*-terminus-bold-*-*-*-*-120-*-*-*-*-*-*")
-  , ("M-S-l", spawn "slock")
+  , ("M-S-l", spawn "xscreensaver-command -lock")
   , ("M-0",   windows $ W.greedyView "0")
   , ("M-S-0",   windows $ W.shift "0")
   ]
