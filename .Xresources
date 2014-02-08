@@ -1,0 +1,14 @@
+*emacs*Font:       -*-terminus-medium-*-*-*-16-*-*-*-*-*-*-*
+*emacs*Background: black
+*emacs*Foreground: white
+*emacs*menuBar:    off
+*emacs*toolBar:    off
+*emacs*verticalScrollBars:  on
+
+
+*XTerm*foreground: white
+*XTerm*background: black
+*XTerm*font:        -*-terminus-medium-*-*-*-16-*-*-*-*-*-*-*
+*XTerm*saveLines:  1024
+*XTerm*scrollBar:  false
+
