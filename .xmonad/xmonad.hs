@@ -6,6 +6,7 @@ import qualified XMonad.StackSet as W
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig
 import System.IO
+import System.Directory
 
 main = do
   xmproc <- spawnPipe "xmobar ~/.xmonad/xmobarrc"
@@ -18,6 +19,7 @@ main = do
                       { ppOutput = hPutStrLn xmproc
                       , ppOrder  = (\(ws:lo:_) -> [ws, lo]) }
      , workspaces = map show $ [ 1 .. 9 ] ++ [ 0 :: Int ]
+     , startupHook= spawn "S=~/.xmonad/session; [ -x $S ] && $S"
      } `removeKeysP`
      [ "M-q", "M-S-q"
      ] `additionalKeysP` myKeys

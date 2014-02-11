@@ -1,0 +1,4 @@
+#!/bin/bash
+echo starting > /tmp/z
+xscreensaver -nosplash & disown
+gnome-settings-daemon & disown
