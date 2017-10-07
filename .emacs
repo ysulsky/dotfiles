@@ -8,14 +8,12 @@
     (setq init-elc-exists-p nil))
   (when (not init-elc-exists-p)
     (byte-compile-file init)))
-    
 
-(setq load-path 
+
+(setq load-path
       (cons "~/.emacs.d/site-lisp/" load-path))
 
-;; iswitchb rules!
-(require 'iswitchb)
-(iswitchb-mode 1)
+(ido-mode 1)
 
 ;; paste at cursor not at mouse point
 (setq mouse-yank-at-point t)
@@ -45,13 +43,14 @@
 ;(autoload 'caml-mode "caml" "Major mode for editing Caml code." t)
 ;(autoload 'run-caml "inf-caml" "Run an inferior Caml process." t)
 
+
 ;(load-library "column-marker")
 ;(add-hook 'scheme-mode-hook (lambda () (interactive) (column-marker-1 80)))
 
 (if t
     (progn
-      (autoload 'scheme-mode "cmuscheme" "Major mode for Scheme." t) 
-      (autoload 'run-scheme "cmuscheme" "Switch to interactive Scheme buffer." t) 
+      (autoload 'scheme-mode "cmuscheme" "Major mode for Scheme." t)
+      (autoload 'run-scheme "cmuscheme" "Switch to interactive Scheme buffer." t)
       (defvar scheme-program-name "gosh"))
   (progn
     (add-to-list 'load-path "/usr/share/emacs/site-lisp/slime/")
@@ -74,10 +73,10 @@
     (add-hook 'scheme-mode-hook (lambda () (slime-mode +1)))))
 
 
-
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 (add-hook 'scheme-mode-hook (lambda () (require 'quack)))
 
-(autoload 'latex-mode "tex-site" "Load Auctex." t) 
+(autoload 'latex-mode "tex-site" "Load Auctex." t)
 
 ;(load-library "gosh.el")
 
@@ -94,7 +93,7 @@
 (line-number-mode t)
 
 ;; put backups in ~/.backups
-(add-to-list 'backup-directory-alist 
+(add-to-list 'backup-directory-alist
              (cons "." "~/.backups"))
 (setq version-control t)
 (setq delete-old-versions t)
@@ -142,7 +141,6 @@
  '(menu-bar-mode nil)
  '(message-send-mail-function (quote smtpmail-send-it))
  '(mouse-wheel-mode t nil (mwheel))
- '(pc-selection-mode t nil (pc-select))
  '(quack-default-program "gosh")
  '(quack-fontify-style (quote emacs))
  '(quack-fontify-threesemi-p nil)
@@ -182,12 +180,7 @@
              'common-lisp-indent-function)
 
 
-;(require 'column-marker)
-;(add-hook 'c-mode-hook (lambda () (interactive) (column-marker-1 80)))
-;(add-hook 'lisp-mode-hook (lambda () (interactive) (column-marker-1 80)))
-
-
-(add-hook 'c-mode-hook (lambda () 
+(add-hook 'c-mode-hook (lambda ()
                          (require 'cc-mode)
                          (c-set-offset 'substatement-open 0)))
 
@@ -204,7 +197,7 @@
   (interactive)
   (if multiple-frames
       (delete-frame)
-    (save-buffers-kill-emacs)))      
+    (save-buffers-kill-emacs)))
 
 (global-set-key "\C-x\C-c" 'close-this-window)
 
@@ -212,3 +205,10 @@
 ;(t-mouse-mode t)
 ;(xterm-mouse-mode t)
 
+(add-hook 'after-init-hook 'global-flycheck-mode)
+(require 'whitespace)
+(setq whitespace-style '(face empty tabs lines-tail trailing))
+(global-whitespace-mode t)
+
+(provide '.emacs)
+;;; .emacs ends here
