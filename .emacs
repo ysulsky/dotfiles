@@ -1,19 +1,18 @@
 
-;; compile .emacs
-(let* ((init     (file-name-sans-extension user-init-file))
-       (init-elc (concat init ".elc"))
-       (init-elc-exists-p (file-exists-p init-elc)))
-  (when (and init-elc-exists-p (file-newer-than-file-p init user-init-file))
-    (delete-file init-elc)
-    (setq init-elc-exists-p nil))
-  (when (not init-elc-exists-p)
-    (byte-compile-file init)))
+(require 'package)
+(package-initialize)
 
+(defun install-flycheck ()
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+  (package-refresh-contents)
+  (package-install 'flycheck))
 
-(setq load-path
-      (cons "~/.emacs.d/site-lisp/" load-path))
+(let ((default-directory  "~/.emacs.d/site-lisp/"))
+    (normal-top-level-add-subdirs-to-load-path))
 
-(ido-mode 1)
+(require 'flycheck)
+
+;(ido-mode 1)
 
 ;; paste at cursor not at mouse point
 (setq mouse-yank-at-point t)
@@ -118,10 +117,10 @@
 
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(battery-mode-line-format " [%b%p%%,%d°C]")
  '(case-fold-search t)
  '(column-number-mode t)
@@ -129,8 +128,15 @@
  '(display-battery-mode t)
  '(filladapt-turn-on-mode-hooks (quote (lisp-mode-hook)))
  '(frame-background-mode nil)
+ '(global-flycheck-mode t)
  '(global-font-lock-mode t nil (font-lock))
- '(gnus-secondary-select-methods (quote ((nnimap "gmail" (nnimap-address "imap.gmail.com") (nnimap-server-port 993) (nnimap-stream ssl)))))
+ '(global-undo-tree-mode nil)
+ '(gnus-secondary-select-methods
+   (quote
+    ((nnimap "gmail"
+             (nnimap-address "imap.gmail.com")
+             (nnimap-server-port 993)
+             (nnimap-stream ssl)))))
  '(gnus-secondary-servers (quote ("news.optonline.net" "news.nyu.edu")))
  '(gnus-select-method (quote (nntp "news.optonline.net")))
  '(gnus-treat-display-smileys nil)
@@ -147,10 +153,13 @@
  '(quack-pltish-fontify-definition-names-p t)
  '(quack-pltish-fontify-keywords-p t)
  '(quack-pretty-lambda-p nil)
- '(quack-programs (quote ("scm" "bigloo" "csi" "csi -hygienic" "gosh" "gsi" "gsi ~~/syntax-case.scm -" "guile" "kawa" "mit-scheme" "mred -z" "mzscheme" "mzscheme -M errortrace" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi")))
+ '(quack-programs
+   (quote
+    ("scm" "bigloo" "csi" "csi -hygienic" "gosh" "gsi" "gsi ~~/syntax-case.scm -" "guile" "kawa" "mit-scheme" "mred -z" "mzscheme" "mzscheme -M errortrace" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi")))
  '(quack-smart-open-paren-p nil)
  '(read-file-name-completion-ignore-case t)
  '(rmail-summary-scroll-between-messages t)
+ '(safe-local-variable-values (quote ((eval shell-file-mode t))))
  '(scroll-bar-mode (quote right))
  '(scroll-conservatively 100)
  '(scroll-step 0)
@@ -161,10 +170,10 @@
  '(user-mail-address "yury.sulsky@gmail.com"))
 
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(default ((t (:stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :foundry "xos4" :family "Terminus"))))
  '(cursor ((t (:background "#f4f3f2"))))
  '(custom-group-tag-face-1 ((t (:inherit variable-pitch :foreground "pink" :weight bold :height 180 :family "terminus"))) t)
@@ -205,10 +214,27 @@
 ;(t-mouse-mode t)
 ;(xterm-mouse-mode t)
 
-(add-hook 'after-init-hook 'global-flycheck-mode)
 (require 'whitespace)
 (setq whitespace-style '(face empty tabs lines-tail trailing))
 (global-whitespace-mode t)
+
+
+;; git clone git@github.com:ysulsky/shell-file-mode.git
+(require 'shell-file)
+(global-set-key "\C-z" nil)  ; I never want to stop Emacs.
+(shell-file-define-global-keys (current-global-map) "\C-z")
+(shell-file-define-minor-mode-keys "\C-z")
+
+;; compile .emacs
+(let* ((init     (file-name-sans-extension user-init-file))
+       (init-elc (concat init ".elc"))
+       (init-elc-exists-p (file-exists-p init-elc)))
+  (when (and init-elc-exists-p (file-newer-than-file-p init user-init-file))
+    (delete-file init-elc)
+    (setq init-elc-exists-p nil))
+  (when (not init-elc-exists-p)
+    (byte-compile-file init)))
+
 
 (provide '.emacs)
 ;;; .emacs ends here

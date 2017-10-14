@@ -1,0 +1,3 @@
+[submodule ".emacs.d/site-lisp/shell-file-mode"]
+	path = .emacs.d/site-lisp/shell-file-mode
+	url = https://github.com/ysulsky/shell-file-mode
