@@ -1,4 +1,5 @@
 #!/bin/bash
-echo starting > /tmp/z
-xscreensaver -nosplash & disown
-gnome-settings-daemon & disown
+feh --bg-scale  /usr/share/backgrounds/More_Kamikochi_by_mendhak.jpg
+setxkbmap -option ctrl:nocaps
+#xscreensaver -nosplash & disown
+#gnome-settings-daemon & disown

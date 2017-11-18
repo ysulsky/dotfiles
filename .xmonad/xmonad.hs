@@ -10,7 +10,7 @@ import System.Directory
 
 main = do
   xmproc <- spawnPipe "xmobar ~/.xmonad/xmobarrc"
-  xmonad $ defaultConfig 
+  xmonad $ def
      { modMask    = mod4Mask
      , manageHook = manageDocks <+> manageHook defaultConfig
      , handleEventHook = fullscreenEventHook
@@ -23,10 +23,10 @@ main = do
      } `removeKeysP`
      [ "M-q", "M-S-q"
      ] `additionalKeysP` myKeys
-     
-myKeys = 
+
+myKeys =
   [ ("M-S-r", spawn "dmenu_run -b -i -nb black -nf white -sb gray -sf red -fn -*-terminus-bold-*-*-*-*-120-*-*-*-*-*-*")
-  , ("M-S-l", spawn "xscreensaver-command -lock")
+  , ("M-S-l", spawn "gnome-screensaver-command --lock")
   , ("M-0",   windows $ W.greedyView "0")
   , ("M-S-0",   windows $ W.shift "0")
   ]
