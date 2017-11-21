@@ -1,6 +1,6 @@
-%include /etc/inputrc
+$include /etc/inputrc
 
-#set horizontal-scroll-mode On
+#set horizontal-scroll-mode on
 Meta-h: backward-kill-word
 Control-Del: backward-kill-word
 "\C-u": universal-argument
