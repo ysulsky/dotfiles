@@ -7,28 +7,6 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Util.EZConfig
 import XMonad.Util.Run(spawnPipe)
 
--- import XMonad.Hooks.EwmhDesktops
--- import XMonad.Hooks.ManageDocks
--- import qualified XMonad.StackSet as W
--- import XMonad.Util.Run(spawnPipe)
--- import System.Directory
-
--- main = do
---   xmproc <- spawnPipe "xmobar ~/.xmonad/xmobarrc"
---   xmonad $ def
---      { modMask    = mod4Mask
---      , manageHook = manageDocks <+> manageHook defaultConfig
---      , handleEventHook = fullscreenEventHook
---      , layoutHook = avoidStruts  $  layoutHook defaultConfig
---      , logHook    = dynamicLogWithPP xmobarPP
---                       { ppOutput = hPutStrLn xmproc
---                       , ppOrder  = (\(ws:lo:_) -> [ws, lo]) }
---      , workspaces = map show $ [ 1 .. 9 ] ++ [ 0 :: Int ]
---      , startupHook= spawn "S=~/.xmonad/session; [ -x $S ] && $S"
---      } `removeKeysP`
---      [ "M-q", "M-S-q"
---      ] `additionalKeysP` myKeys
-
 -- Color of current window title in xmobar.
 xmobarTitleColor :: String
 xmobarTitleColor = "#FFB6B0"
@@ -53,19 +31,19 @@ dmenu = intercalate " "
 setKeys :: XConfig a -> XConfig a
 setKeys cfg = cfg
   `removeKeysP`
-   [ "M-o", "M-q", "M-S-q" ]
+  [ "M-o", "M-q", "M-S-q" ]
   `additionalKeysP`
-   [ ("M-S-r", spawn dmenu)
-   , ("M-S-l", spawn screensaver)
-   , ("M-<Return>", spawn $ terminal cfg)
-   , ("M-S-<Return>", spawn $ terminal cfg)
-  ]
+  [ ("M-S-r", spawn dmenu)
+  , ("M-S-l", spawn screensaver)
+  , ("M-<Return>", spawn $ terminal cfg)
+  , ("M-S-<Return>", spawn $ terminal cfg)]
   `additionalKeys`
-  [
-    ((0, xF86XK_AudioLowerVolume   ), spawn "pactl sink-set-volume 0 -- -1.5%")
-  , ((0, xF86XK_AudioRaiseVolume   ), spawn "pactl sink-set-volume 0 -- +1.5%")
-  , ((0, xF86XK_AudioMute          ), spawn "pactl sink-mute 0 toggle")
-  ]
+  [ ((0, xF86XK_AudioLowerVolume),
+     spawn "pactl set-sink-volume @DEFAULT_SINK@ -- -1.5%")
+  , ((0, xF86XK_AudioRaiseVolume),
+     spawn "pactl set-sink-volume @DEFAULT_SINK@ -- +1.5%")
+  , ((0, xF86XK_AudioMute),
+     spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")]
 
 main :: IO ()
 main = do
