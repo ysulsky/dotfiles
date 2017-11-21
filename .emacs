@@ -1,16 +1,27 @@
-
 (require 'package)
 (package-initialize)
 
-(defun install-flycheck ()
+(defun install-package (pkgname)
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
   (package-refresh-contents)
-  (package-install 'flycheck))
+  (package-install pkgname))
+
+;; (install-package 'flycheck)
+(require 'flycheck)
 
 (let ((default-directory  "~/.emacs.d/site-lisp/"))
-    (normal-top-level-add-subdirs-to-load-path))
+  (normal-top-level-add-subdirs-to-load-path))
 
-(require 'flycheck)
+;; buildifier
+(let ((buildifier-path "~/.local/go/bin/buildifier"))
+  (if buildifier-path
+      (add-hook 'after-save-hook
+              (lambda()
+                (if (string-match "BUILD" (file-name-base (buffer-file-name)))
+                    (progn
+                      (shell-command (concat buildifier-path " " (buffer-file-name)))
+                      (find-alternate-file (buffer-file-name))))))))
+
 
 ;(ido-mode 1)
 
@@ -147,6 +158,7 @@
  '(menu-bar-mode nil)
  '(message-send-mail-function (quote smtpmail-send-it))
  '(mouse-wheel-mode t nil (mwheel))
+ '(package-selected-packages (quote (flycheck)))
  '(quack-default-program "gosh")
  '(quack-fontify-style (quote emacs))
  '(quack-fontify-threesemi-p nil)
@@ -175,7 +187,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :foundry "xos4" :family "Terminus"))))
- '(cursor ((t (:background "#f4f3f2"))))
  '(custom-group-tag-face-1 ((t (:inherit variable-pitch :foreground "pink" :weight bold :height 180 :family "terminus"))) t)
  '(highlight-current-line-face ((t (:background "lightgoldenrodyellow"))))
  '(keywiz-command-face ((t (:inherit (quote variable-pitch) :foreground "Blue" :weight bold :height 1.2 :family "terminus"))))
@@ -224,6 +235,9 @@
 (global-set-key "\C-z" nil)  ; I never want to stop Emacs.
 (shell-file-define-global-keys (current-global-map) "\C-z")
 (shell-file-define-minor-mode-keys "\C-z")
+(defun shell-file-cd-command (dir)
+  (concat "shell-file-cd " dir))
+
 
 ;; compile .emacs
 (let* ((init     (file-name-sans-extension user-init-file))

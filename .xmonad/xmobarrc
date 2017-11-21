@@ -12,5 +12,5 @@ Config {
              ]
 , sepChar = "%"
 , alignSep = "}{"
-, template = "%wlan0wi% | %battery% | %cpu% } %StdinReader% { <fc=#ee9a00>%date%</fc>"
+, template = "%wlan0wi% | %cpu% } %StdinReader% { <fc=#ee9a00>%date%</fc>"
 }
