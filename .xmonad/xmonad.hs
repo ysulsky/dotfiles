@@ -39,9 +39,9 @@ setKeys cfg = cfg
   , ("M-S-<Return>", spawn $ terminal cfg)]
   `additionalKeys`
   [ ((0, xF86XK_AudioLowerVolume),
-     spawn "pactl set-sink-volume @DEFAULT_SINK@ -- -1.5%")
+     spawn "pactl set-sink-volume @DEFAULT_SINK@ -2%")
   , ((0, xF86XK_AudioRaiseVolume),
-     spawn "pactl set-sink-volume @DEFAULT_SINK@ -- +1.5%")
+     spawn "pactl set-sink-volume @DEFAULT_SINK@ +2%")
   , ((0, xF86XK_AudioMute),
      spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")]
 
