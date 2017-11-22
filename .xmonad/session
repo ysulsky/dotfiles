@@ -1,5 +1,11 @@
 #!/bin/bash
 feh --bg-scale  /usr/share/backgrounds/More_Kamikochi_by_mendhak.jpg
 setxkbmap -option ctrl:nocaps
+trayer --edge top --align right --widthtype request --SetDockType true \
+       --SetPartialStrut true --tint 0 --expand true --heighttype pixel \
+       --height 16 --iconspacing 5 --alpha 0 --transparent true &
 #xscreensaver -nosplash & disown
 #gnome-settings-daemon & disown
+mate-settings-daemon & disown
+nm-applet & disown
+mate-volume-control-applet & disown

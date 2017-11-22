@@ -119,6 +119,10 @@
 ;; call last keyboard C-x e -> f5
 (global-set-key [f5] 'kmacro-end-and-call-macro)
 
+;; zoom fonts via C-scroll
+(global-set-key [C-mouse-wheel-up-event] 'text-scale-increase)
+(global-set-key [C-mouse-wheel-down-event] 'text-scale-decrease)
+
  ;; Get rid of that annoying prompt that requires one to type
  ;; in YES and then press the enter key to confirm.
 (defun yes-or-no-p (PROMPT)
