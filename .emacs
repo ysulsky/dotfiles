@@ -119,10 +119,6 @@
 ;; call last keyboard C-x e -> f5
 (global-set-key [f5] 'kmacro-end-and-call-macro)
 
-;; zoom fonts via C-scroll
-(global-set-key [C-mouse-wheel-up-event] 'text-scale-increase)
-(global-set-key [C-mouse-wheel-down-event] 'text-scale-decrease)
-
  ;; Get rid of that annoying prompt that requires one to type
  ;; in YES and then press the enter key to confirm.
 (defun yes-or-no-p (PROMPT)
@@ -190,7 +186,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :foundry "xos4" :family "Terminus"))))
+ '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 129 :width normal :foundry "xos4" :family "Terminus"))))
  '(custom-group-tag-face-1 ((t (:inherit variable-pitch :foreground "pink" :weight bold :height 180 :family "terminus"))) t)
  '(highlight-current-line-face ((t (:background "lightgoldenrodyellow"))))
  '(keywiz-command-face ((t (:inherit (quote variable-pitch) :foreground "Blue" :weight bold :height 1.2 :family "terminus"))))
@@ -242,6 +238,11 @@
 (defun shell-file-cd-command (dir)
   (concat "shell-file-cd " dir))
 
+
+;; zoom fonts via C-scroll
+(progn
+  (global-set-key [C-mouse-4] 'text-scale-increase)
+  (global-set-key [C-mouse-5] 'text-scale-decrease))
 
 ;; compile .emacs
 (let* ((init     (file-name-sans-extension user-init-file))
