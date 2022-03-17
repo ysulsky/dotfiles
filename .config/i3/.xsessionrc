@@ -1,0 +1,17 @@
+# Turn monitor off 30 seconds after locking
+export XSECURELOCK_BLANK_DPMS_STATE=off
+export XSECURELOCK_BLANK_TIMEOUT=30
+
+# load Xresources
+xrdb -merge ~/.Xresources
+
+# Prevents having multiple ssh-agent processes running at the same time.
+pkill ssh-agent
+eval $(ssh-agent -s)
+
+# Remove caps lock
+setxkbmap -option ctrl:nocaps
+
+# Set the laptop display to the right of the main monitor
+xrandr --output HDMI-1 --auto --left-of eDP-1
+
