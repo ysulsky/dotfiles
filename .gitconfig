@@ -3,3 +3,5 @@
 	email = yury.sulsky@gmail.com
 [push]
 	default = simple
+[merge]
+	conflictstyle = diff3
