@@ -128,10 +128,18 @@
   :config
   (define-key c-mode-base-map (kbd "C-c o") 'ff-find-other-file))
 
+(defun c-mode-hook-common ()
+  (c-set-offset 'substatement-open 0)
+  (setq c-basic-offset 4)
+  (setq c-indent-level 4)
+  (setq indent-tabs-mode nil))
+
 ;; C mode hook for indentation
-(add-hook 'c-mode-hook (lambda ()
-                         (require 'cc-mode)
-                         (c-set-offset 'substatement-open 0)))
+(add-hook 'c-mode-hook 'c-mode-hook-common)
+(add-hook 'c++-mode-hook 'c-mode-hook-common)
+
+;; Define .dv files as C++ header files
+(add-to-list 'auto-mode-alist '("\\.dv\\'" . c++-mode))
 
 ;; Zoom fonts with Ctrl+mouse wheel
 (global-set-key [C-mouse-4] 'text-scale-increase)
