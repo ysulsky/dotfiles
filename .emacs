@@ -57,11 +57,17 @@
 
 (use-package eglot
   :hook ((python-mode . eglot-ensure)
-         (c-mode . eglot-ensure)
+         (c-mode . eglot-ensuxre)
          (c++-mode . eglot-ensure))
-  :bind (("ESC q" . eglot-format))
+  :bind-keymap ("C-c l" . eglot-mode-map)
+  :bind (:map eglot-mode-map
+          ("ESC q" . eglot-format)
+          ("C-c l d" . xref-find-definitions))
   :config
   (setq eglot-confirm-server-initiated-edits nil))
+
+(use-package treesit-auto
+  :config (global-treesit-auto-mode))
 
 (use-package vertico
   :config (vertico-mode 1))
@@ -92,7 +98,6 @@
 
   (advice-add 'company-calculate-candidates :filter-return #'company-add-empty-completion)
   (setq company-selection-wrap-around t)
-  (setq company-show-numbers t)
   (global-company-mode))
 
 (use-package fzf
@@ -106,6 +111,8 @@
     (let ((display-line-numbers t))
       (apply orig-fun args)))
   (advice-add 'fzf/start :around #'fzf-with-line-numbers))
+
+(use-package ripgrep)
 
 ;; rainbow-delimiters: Highlight delimiters such as parentheses, brackets or braces according to their depth
 (use-package rainbow-delimiters
@@ -133,6 +140,17 @@
   (setq c-basic-offset 4)
   (setq c-indent-level 4)
   (setq indent-tabs-mode nil))
+
+(use-package projectile
+  :init
+  (projectile-mode +1)
+  :config
+  :bind
+  ("C-x p" . projectile-command-map)
+  ("C-x p C-f" . project-find-file)
+  ("C-x C-p" . projectile-command-map)
+  ("C-x C-p C-f" . project-find-file))
+
 
 ;; C mode hook for indentation
 (add-hook 'c-mode-hook 'c-mode-hook-common)
@@ -230,14 +248,3 @@
 (defun yes-or-no-p (PROMPT)
    (beep)
    (y-or-n-p PROMPT))
-
-(setq fixed-default-directory
-  (cond
-    ((file-exists-p "~/ai") "~/ai")
-    (t nil)))
-
-(when fixed-default-directory
-  (add-hook 'find-file-hook
-    (lambda () (setq-local default-directory fixed-default-directory)))
-  (when (file-exists-p (file-name-concat fixed-default-directory ".git"))
-    (global-set-key (kbd "C-x C-f") 'fzf-git-files)))
