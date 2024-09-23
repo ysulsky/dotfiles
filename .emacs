@@ -55,16 +55,31 @@
           (lambda ()
             (local-set-key (kbd "ESC q") 'format-bash-code)))
 
-(use-package eglot
-  :hook ((python-mode . eglot-ensure)
-         (c-mode . eglot-ensuxre)
-         (c++-mode . eglot-ensure))
-  :bind-keymap ("C-c l" . eglot-mode-map)
-  :bind (:map eglot-mode-map
-          ("ESC q" . eglot-format)
-          ("C-c l d" . xref-find-definitions))
+;; (use-package eglot
+;;   :hook ((emacs-lisp-mode . eglot-ensure))
+;;   :bind-keymap ("C-c l" . eglot-mode-map)
+;;   :bind (:map eglot-mode-map
+;;          ("ESC q" . eglot-format)))
+
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :hook ((python-mode . lsp-deferred)
+         (c-mode . lsp-deferred)
+          (c++-mode . lsp-deferred))
+  :init (setq lsp-keymap-prefix "C-c l")
+  :config (setq lsp-headerline-breadcrumb-enable nil)
+  :bind (:map lsp-mode-map
+         ("ESC q" . lsp-format-region)))
+
+(use-package lsp-ui
+  :commands lsp-ui-mode
   :config
-  (setq eglot-confirm-server-initiated-edits nil))
+  (setq lsp-ui-sideline-enable t)
+  (setq lsp-ui-doc-enable t)
+  (setq lsp-ui-doc-position 'bottom))
+
+(use-package lsp-pyright
+  :hook (python-mode . (lambda () (require 'lsp-pyright))))
 
 (use-package treesit-auto
   :config (global-treesit-auto-mode))
@@ -117,6 +132,30 @@
 ;; rainbow-delimiters: Highlight delimiters such as parentheses, brackets or braces according to their depth
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
+
+(use-package doom-modeline
+  :config
+
+  (defun short-system-name ()
+    (car (split-string (system-name) "\\.")))
+
+  (doom-modeline-def-segment system-name
+    "Displays the system name on the left side of the modeline."
+    (propertize (short-system-name) 'face 'doom-modeline-buffer-file))
+
+  ;; Create a custom modeline that includes the system name
+  (doom-modeline-def-modeline 'main
+    '(eldoc bar workspace-name window-number modals matches follow buffer-info
+      remote-host buffer-position word-count parrot selection-info)
+    '(compilation objed-state misc-info persp-name battery grip irc mu4e gnus
+      github debug repl lsp minor-modes input-method indent-info buffer-encoding
+      major-mode process vcs check time system-name))
+
+  (doom-modeline-mode 1)
+
+  :custom-face
+  (mode-line ((t (:background "#4a4a4a" :foreground "white"))))
+  (mode-line-inactive ((t (:background "#353535" :foreground "gray")))))
 
 ;; Custom function to close window or exit Emacs
 (defun close-this-window ()
