@@ -1,3 +1,14 @@
+;; Performance
+(setq gc-cons-threshold (* 384 1024 1024)
+      gc-cons-percentage 0.6)
+
+;; Do not load outdated byte code files.
+(setq load-prefer-newer t)
+
+;; Default was too low.
+;; Increase for better lsp performance.
+(setq read-process-output-max (* 3 1024 1024)) ;; 3mb
+
 ;; Initialize package sources
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
