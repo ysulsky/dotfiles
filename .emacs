@@ -275,8 +275,18 @@
       version-control t)
 
 ;; Lockfile settings
-(setq lock-file-name-transforms
-      '((".*" "~/.emacs.d/lock-files/" t)))
+(defun my-make-lock-file-name (filename)
+  "Create a lock file name for FILENAME, handling both local and TRAMP paths."
+  (if (file-remote-p filename)
+      ;; Handle TRAMP remote paths
+      (let* ((vec (tramp-dissect-file-name filename))
+             (user (tramp-file-name-user vec))
+             (host (tramp-file-name-host vec)))
+        (tramp-make-tramp-file-name user host "~/.emacs.d/lock-files/"))
+    ;; For local files, use the default directory
+    (concat "~/.emacs.d/lock-files/" (file-name-nondirectory filename))))
+
+(setq make-lock-file-name 'my-make-lock-file-name)
 
 ;; Enable auto-revert mode globally
 (global-auto-revert-mode 1)
@@ -298,3 +308,15 @@
 (defun yes-or-no-p (PROMPT)
    (beep)
    (y-or-n-p PROMPT))
+
+;; Shadow everything after ~ the same way that / works.
+(defun substitute-tilde-in-paths (orig-fun &rest args)
+  "Replace everything up to the last '~' with '~' in the file path."
+  (let ((path (car args)))
+    (if (string-match "~" path)
+        (let ((new-path (replace-regexp-in-string "^.*~" "~" path)))
+          (apply orig-fun (list new-path)))
+      (apply orig-fun args))))
+
+;; Add the advice to 'substitute-in-file-name'
+(advice-add 'substitute-in-file-name :around #'substitute-tilde-in-paths)
