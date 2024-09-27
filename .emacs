@@ -240,8 +240,8 @@
                 shell-mode-hook
                 eshell-mode-hook))
   (add-hook mode (lambda ()
-                   (setenv "PAGER" "cat")
                    (display-line-numbers-mode 0))))
+
 
 ;; Make ESC quit prompts
 ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
@@ -317,3 +317,8 @@
 
 ;; Add the advice to 'substitute-in-file-name'
 (advice-add 'substitute-in-file-name :around #'substitute-tilde-in-paths)
+
+(defun my-prog-mode-hook ()
+  (local-set-key (kbd "M-/") 'comment-or-uncomment-region))
+
+(add-hook 'prog-mode-hook 'my-prog-mode-hook)
