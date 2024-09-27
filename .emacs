@@ -124,6 +124,7 @@
 
   (advice-add 'company-calculate-candidates :filter-return #'company-add-empty-completion)
   (setq company-selection-wrap-around t)
+  (setq company-global-modes '(not shell-mode eshell-mode term-mode vterm-mode))
   (global-company-mode))
 
 (use-package fzf
@@ -234,14 +235,13 @@
 (setq lisp-indent-offset 2)
 
 (column-number-mode)
-;; (global-display-line-numbers-mode t)
 
-;; Disable line numbers for some modes
-(dolist (mode '(org-mode-hook
-                term-mode-hook
+(dolist (mode '(term-mode-hook
                 shell-mode-hook
                 eshell-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+  (add-hook mode (lambda ()
+                   (setenv "PAGER" "cat")
+                   (display-line-numbers-mode 0))))
 
 ;; Make ESC quit prompts
 ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
@@ -303,11 +303,8 @@
 (shell-file-define-global-keys (current-global-map) "\C-z")
 (shell-file-define-minor-mode-keys "\C-z")
 
-;; Get rid of that annoying prompt that requires one to type
- ;; in YES and then press the enter key to confirm.
-(defun yes-or-no-p (PROMPT)
-   (beep)
-   (y-or-n-p PROMPT))
+;; Allow "y"/"n" answers
+(setq use-short-answers t)
 
 ;; Shadow everything after ~ the same way that / works.
 (defun substitute-tilde-in-paths (orig-fun &rest args)
