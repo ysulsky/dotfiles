@@ -66,31 +66,39 @@
           (lambda ()
             (local-set-key (kbd "ESC q") 'format-bash-code)))
 
-;; (use-package eglot
-;;   :hook ((emacs-lisp-mode . eglot-ensure))
-;;   :bind-keymap ("C-c l" . eglot-mode-map)
-;;   :bind (:map eglot-mode-map
-;;          ("ESC q" . eglot-format)))
 
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :hook ((python-mode . lsp-deferred)
-         (c-mode . lsp-deferred)
-          (c++-mode . lsp-deferred))
-  :init (setq lsp-keymap-prefix "C-c l")
-  :config (setq lsp-headerline-breadcrumb-enable nil)
-  :bind (:map lsp-mode-map
-         ("ESC q" . lsp-format-region)))
-
-(use-package lsp-ui
-  :commands lsp-ui-mode
+(use-package eglot
+  :hook ((emacs-lisp-mode . eglot-ensure)
+         (python-mode . eglot-ensure)
+         (c-mode . eglot-ensure)
+         (c++-mode . eglot-ensure))
   :config
-  (setq lsp-ui-sideline-enable t)
-  (setq lsp-ui-doc-enable t)
-  (setq lsp-ui-doc-position 'bottom))
+  (add-to-list 'eglot-server-programs '(python-mode . ("pyright-langserver" "--stdio")))
 
-(use-package lsp-pyright
-  :hook (python-mode . (lambda () (require 'lsp-pyright))))
+  (defvar eglot-keymap
+    (let ((map (make-sparse-keymap)))
+      (define-key map (kbd "a") #'eglot-code-actions)
+      (define-key map (kbd "d") #'eglot-find-declaration)
+      (define-key map (kbd "g") #'eglot-find-typeDefinition)
+      map))
+  :bind-keymap ("C-c l" . eglot-keymap))
+
+;; (use-package lsp-mode
+;;   :commands (lsp lsp-deferred)
+;;   :hook ((python-mode . lsp-deferred)
+;;          (c-mode . lsp-deferred)
+;;           (c++-mode . lsp-deferred))
+;;   :init (setq lsp-keymap-prefix "C-c l")
+;;   :config (setq lsp-headerline-breadcrumb-enable nil)
+;;   :bind (:map lsp-mode-map
+;;          ("ESC q" . lsp-format-region)))
+
+;; (use-package lsp-ui
+;;   :commands lsp-ui-mode
+;;   :config
+;;   (setq lsp-ui-sideline-enable t)
+;;   (setq lsp-ui-doc-enable t)
+;;   (setq lsp-ui-doc-position 'bottom))
 
 (use-package treesit-auto
   :config (global-treesit-auto-mode))
