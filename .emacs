@@ -190,9 +190,21 @@
 (setq whitespace-style '(face empty tabs lines-tail trailing))
 (global-whitespace-mode t)
 
+(defun xref-or-ffap ()
+  "Go to xref or ffap if on an include line."
+  (interactive)
+  (if (and (or (eq major-mode 'c-mode)
+               (eq major-mode 'c++-mode))
+           (save-excursion
+             (beginning-of-line)
+             (looking-at-p "^#include")))
+      (call-interactively #'ffap)
+    (call-interactively #'xref-find-definitions)))
+
 (use-package cc-mode
   :config
-  (define-key c-mode-base-map (kbd "C-c o") 'ff-find-other-file))
+  (define-key c-mode-base-map (kbd "C-c o") 'ff-find-other-file)
+  (define-key c-mode-base-map (kbd "M-.") 'xref-or-ffap))
 
 (defun c-mode-hook-common ()
   (c-set-offset 'substatement-open 0)
@@ -334,4 +346,3 @@
 (let ((local (expand-file-name "~/.emacs.d/local.el")))
   (when (file-exists-p local)
     (load local)))
-
