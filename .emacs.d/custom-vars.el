@@ -27,6 +27,7 @@
  '(rustic-ansi-faces
     ["#242730" "#ff665c" "#7bc275" "#FCCE7B" "#51afef" "#C57BDB" "#5cEfFF" "#bbc2cf"])
  '(safe-local-variable-values '((eval shell-file-mode t)))
+ '(shell-file-dir "~/.emacs.d/shell-file-outputs")
  '(scroll-conservatively 100)
  '(shfmt-arguments '("-i" "4"))
  '(vc-annotate-background "#242730")
