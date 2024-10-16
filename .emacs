@@ -340,8 +340,8 @@
 
 ;; (defun my-prog-mode-hook ()
 ;;   (local-set-key (kbd "M-/") 'comment-or-uncomment-region))
-
-(add-hook 'prog-mode-hook 'my-prog-mode-hook)
+;; 
+;; (add-hook 'prog-mode-hook 'my-prog-mode-hook)
 
 (let ((local (expand-file-name "~/.emacs.d/local.el")))
   (when (file-exists-p local)
