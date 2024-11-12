@@ -294,6 +294,10 @@
       kept-old-versions 2
       version-control t)
 
+;; Autosave
+(setq auto-save-file-name-transforms
+    `((".*" ,(concat user-emacs-directory "auto-save/") t)))
+
 ;; Lockfile settings
 (defun my-make-lock-file-name (filename)
   "Create a lock file name for FILENAME, handling both local and TRAMP paths."
@@ -302,9 +306,9 @@
       (let* ((vec (tramp-dissect-file-name filename))
              (user (tramp-file-name-user vec))
              (host (tramp-file-name-host vec)))
-        (tramp-make-tramp-file-name user host "~/.emacs.d/lock-files/"))
+        (tramp-make-tramp-file-name user host (concat user-emacs-directory "lock-files/")))
     ;; For local files, use the default directory
-    (concat "~/.emacs.d/lock-files/" (file-name-nondirectory filename))))
+    (concat user-emacs-directory "lock-files/" (file-name-nondirectory filename))))
 
 (setq make-lock-file-name 'my-make-lock-file-name)
 
@@ -316,7 +320,7 @@
 
 (setq truncate-lines t)
 
-(let ((default-directory  "~/.emacs.d/site-lisp/"))
+(let ((default-directory  (concat user-emacs-directory "site-lisp/")))
   (normal-top-level-add-subdirs-to-load-path))
 
 (require 'shell-file)
@@ -343,6 +347,6 @@
 ;;
 ;; (add-hook 'prog-mode-hook 'my-prog-mode-hook)
 
-(let ((local (expand-file-name "~/.emacs.d/local.el")))
+(let ((local (concat user-emacs-directory "local.el")))
   (when (file-exists-p local)
     (load local)))
