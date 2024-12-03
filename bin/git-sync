@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Check if a branch name was provided
+if [ $# -eq 0 ]; then
+    echo "Usage: git sync <branch> [-f]"
+    exit 1
+fi
+
+branch=$1
+force=$2
+
+# Fetch latest changes from remote
+git fetch
+
+# Check if local branch exists and needs ancestry check
+if [ -n "$(git rev-parse --verify $branch 2>/dev/null)" ] && [ "$force" != "-f" ]; then
+    if ! git merge-base --is-ancestor $branch origin/$branch; then
+        echo "Error: Local $branch is not an ancestor of origin/$branch. Use -f to force switch."
+        exit 1
+    fi
+fi
+
+# Switch to the branch
+git switch -C $branch origin/$branch
