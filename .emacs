@@ -100,6 +100,10 @@
 ;;   (setq lsp-ui-doc-enable t)
 ;;   (setq lsp-ui-doc-position 'bottom))
 
+(use-package which-func
+  :ensure nil  ;; which-func is built-in
+  :hook (prog-mode . which-function-mode))
+
 (use-package treesit-auto
   :config (global-treesit-auto-mode))
 
