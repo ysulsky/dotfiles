@@ -342,6 +342,9 @@
 ;; Add the advice to 'substitute-in-file-name'
 (advice-add 'substitute-in-file-name :around #'substitute-tilde-in-paths)
 
+;; Do not set a background color in terminal mode, makes copying bad.
+(unless window-system (set-face-attribute 'default nil :background "unspecified-bg"))
+
 ;; (defun my-prog-mode-hook ()
 ;;   (local-set-key (kbd "M-/") 'comment-or-uncomment-region))
 ;;
