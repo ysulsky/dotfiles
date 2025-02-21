@@ -100,10 +100,6 @@
 ;;   (setq lsp-ui-doc-enable t)
 ;;   (setq lsp-ui-doc-position 'bottom))
 
-(use-package which-func
-  :ensure nil  ;; which-func is built-in
-  :hook (prog-mode . which-function-mode))
-
 (use-package treesit-auto
   :config (global-treesit-auto-mode))
 
@@ -193,6 +189,9 @@
 (require 'whitespace)
 (setq whitespace-style '(face empty tabs lines-tail trailing))
 (global-whitespace-mode t)
+
+;; Always display which function we're in.
+(which-function-mode 1)
 
 (defun xref-or-ffap ()
   "Go to xref or ffap if on an include line."
