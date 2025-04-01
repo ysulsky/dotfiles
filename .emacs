@@ -66,6 +66,10 @@
           (lambda ()
             (local-set-key (kbd "ESC q") 'format-bash-code)))
 
+;; M-x package-vc-install https://github.com/jdtsmith/eglot-booster
+(use-package eglot-booster
+  :after eglot
+  :config (eglot-booster-mode))
 
 (use-package eglot
   :hook ((emacs-lisp-mode . eglot-ensure)
@@ -219,6 +223,7 @@
   :init
   (projectile-mode +1)
   :config
+  (add-to-list 'projectile-ignored-projects (expand-file-name "~"))
   :bind
   ("C-x p" . projectile-command-map)
   ("C-x p C-f" . project-find-file)
