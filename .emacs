@@ -223,12 +223,12 @@
   :init
   (projectile-mode +1)
   :config
-  (add-to-list 'projectile-ignored-projects (expand-file-name "~"))
+  (add-to-list 'projectile-ignored-projects (expand-file-name "~/"))
   :bind
   ("C-x p" . projectile-command-map)
-  ("C-x p C-f" . project-find-file)
+  ("C-x p C-f" . projectile-find-file)
   ("C-x C-p" . projectile-command-map)
-  ("C-x C-p C-f" . project-find-file))
+  ("C-x C-p C-f" . projectile-find-file))
 
 
 ;; C mode hook for indentation
