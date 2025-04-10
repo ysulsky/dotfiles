@@ -72,13 +72,15 @@
   :config (eglot-booster-mode))
 
 (defun eglot-ensure-if-valid-project ()
-  (interactive)
-  (let ((root (project-root (project-current))))
-    (if (and root (not (equal root (expand-file-name "~"))))
-      ;; If root is valid and not ~, proceed with eglot-ensure
-      (eglot-ensure)
-      ;; Otherwise, do nothing (or notify the user)
-      (message "No valid project root found or root is ~, not starting eglot."))))
+  (let ((current-project (project-current)))
+    (if current-project
+      (let ((root (project-root current-project)))
+        (if (and root (not (equal root (expand-file-name "~/"))))
+          ;; If root is valid and not ~, proceed with eglot-ensure
+          (progn (message "Starting eglot: " root) (eglot-ensure))
+          ;; Otherwise, do nothing (or notify the user)
+          (message "No valid project root found or root is ~, not starting eglot.")))
+      (message "No current project, not starting eglot."))))
 
 (use-package eglot
   :config
