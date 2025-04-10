@@ -71,13 +71,22 @@
   :after eglot
   :config (eglot-booster-mode))
 
+(defun eglot-ensure-if-valid-project ()
+  (interactive)
+  (let ((root (project-root (project-current))))
+    (if (and root (not (equal root (expand-file-name "~"))))
+      ;; If root is valid and not ~, proceed with eglot-ensure
+      (eglot-ensure)
+      ;; Otherwise, do nothing (or notify the user)
+      (message "No valid project root found or root is ~, not starting eglot."))))
+
 (use-package eglot
-  :hook ((emacs-lisp-mode . eglot-ensure)
-         (python-mode . eglot-ensure)
-         (c-mode . eglot-ensure)
-         (c++-mode . eglot-ensure))
   :config
   (add-to-list 'eglot-server-programs '(python-mode . ("pyright-langserver" "--stdio")))
+
+  (add-hook 'python-mode-hook #'eglot-ensure-if-valid-project)
+  (add-hook 'c-mode-hook #'eglot-ensure-if-valid-project)
+  (add-hook 'c++-mode-hook #'eglot-ensure-if-valid-project)
 
   (defvar eglot-keymap
     (let ((map (make-sparse-keymap)))
