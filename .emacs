@@ -234,6 +234,8 @@
   :init
   (projectile-mode +1)
   :config
+  (setq projectile-project-root-files '(".git"))
+  (setq projectile-project-search-path '(("~/" . 1) ("~/src" . 1)))
   (add-to-list 'projectile-ignored-projects (expand-file-name "~/"))
   :bind
   ("C-x p" . projectile-command-map)
